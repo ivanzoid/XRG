@@ -433,7 +433,7 @@
 }
 
 - (NSInteger)getWindDirectionFromMETARFields:(NSArray *)fields {
-    NSUInteger index = [self findString:"KT$" inArray:fields];
+    NSUInteger index = [self getWindUnitsIndexFromMETARFields:fields];
     if (index == NSNotFound) {
         return -2;
     }
@@ -449,7 +449,7 @@
 }
 
 - (NSInteger)getWindSpeedFromMETARFields:(NSArray *)fields {
-    NSInteger index = [self findString:"KT$" inArray:fields];
+    NSInteger index = [self getWindUnitsIndexFromMETARFields:fields];
     if (index == NSNotFound) {
         return -1;
     }
@@ -465,7 +465,7 @@
 }
 
 - (NSInteger)getGustSpeedFromMETARFields:(NSArray *)fields {
-    NSInteger index = [self findString:"KT$" inArray:fields];
+    NSInteger index = [self getWindUnitsIndexFromMETARFields:fields];
     if (index == NSNotFound) {
         return -1;
     }
@@ -482,6 +482,14 @@
             return 0;
         }
     }
+}
+
+- (NSInteger)getWindUnitsIndexFromMETARFields:(NSArray *)fields {
+    NSInteger index = [self findString:"KT$" inArray:fields];
+    if (index == NSNotFound) {
+        index = [self findString:"MPS$" inArray:fields];
+    }
+    return index;
 }
 
 - (CGFloat)getVisibilityInMilesFromMETARFields:(NSArray *)fields {
